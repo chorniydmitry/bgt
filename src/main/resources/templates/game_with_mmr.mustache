@@ -1,0 +1,55 @@
+<html>
+<head>
+<meta http-equiv="refresh" content="10">
+</head>
+
+<style type="text/css">
+.caption {
+    text-align: center;
+    display:inline;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    top: -5px;
+    left: -20px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.mmr {
+    text-align: left;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.mmrRating {
+    text-align: left;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    color: {{mmrColor}};
+}
+
+html {
+    margin-left: 10px;
+}
+img {
+
+    height: 40px;
+    width: 40px; 
+    margin-left: -15px;
+}
+
+</style>
+
+<span class="mmr">Старт {{startMmr}} Текущий {{currentMmr}}</span> <span class="mmrRating">{{mmrRating}}</span><br />
+{{#games}}
+	
+    <img src="{{imageLink}}" />
+    <div class="caption">{{place}}</div>
+{{/games}}
+<div class="mmr">Среднее место: {{averagePlace}}</div>
+</html>
