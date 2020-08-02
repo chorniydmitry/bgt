@@ -30,13 +30,14 @@ public class BattlegroundsAnalyser implements LogFileObserver {
 	private boolean isCurrentGameTracking = false;
 
 	private HTMLUpdater htmlUpdater = new HTMLUpdater();
-	
+
 	public BattlegroundsAnalyser() {
-		if(Boolean.parseBoolean(ApplicationConfiguration.getItem("use.gameresultshtml")))
+		if (Boolean.parseBoolean(ApplicationConfiguration.getItem("use.gameresultshtml")))
 			new HTMLUpdater().clear();
-		
+
 		if (Boolean.parseBoolean(ApplicationConfiguration.getItem("show.prevresultdialog"))) {
-			ResultsController resController = new ResultsController(new ResultsFrame(RESULTSFRAME_WIDTH, RESULTSFRAME_HEIGHT, APPLICATION_NAME));
+			ResultsController resController = new ResultsController(
+					new ResultsFrame(RESULTSFRAME_WIDTH, RESULTSFRAME_HEIGHT, APPLICATION_NAME));
 			setResultsController(resController);
 		}
 
@@ -45,22 +46,20 @@ public class BattlegroundsAnalyser implements LogFileObserver {
 			setStartMmr(startMmr);
 		}
 	}
-	
+
 	public void setResultsController(ResultsController resultsController) {
 		this.resultsController = resultsController;
 	}
-	
+
 	private void updateHtml() {
-		
-		if(!AnalyserConfiguration.usingHtml())
+
+		if (!AnalyserConfiguration.usingHtml())
 			return;
 
 		if (AnalyserConfiguration.updatingMmr() && isCurrentGameTracking) {
 
-			Icon icon = new ImageIcon(new ImageIcon(
-					BattlegroundsAnalyser.class.getResource("/images/heroes/" + mainPlayer.getHeroId() + ".jpg"))
-							.getImage()
-							.getScaledInstance(HERO_IMAGE_WIDTH, HERO_IMAGE_HEIGHT, Image.SCALE_DEFAULT));
+			Icon icon = new ImageIcon(new ImageIcon("res/" + mainPlayer.getHeroId() + ".jpg").getImage()
+					.getScaledInstance(HERO_IMAGE_WIDTH, HERO_IMAGE_HEIGHT, Image.SCALE_DEFAULT));
 
 			currentMmr = InputMmrDialog.showInputDialog(null, icon, mainPlayer.getPlace(), 0, null);
 			htmlUpdater.setCurrentMmr(currentMmr);
@@ -77,14 +76,15 @@ public class BattlegroundsAnalyser implements LogFileObserver {
 	private void updateResultsDialog() {
 		if (AnalyserConfiguration.showingResultsDialog()) {
 			if (resultsController == null)
-				resultsController = new ResultsController(new ResultsFrame(RESULTSFRAME_WIDTH, RESULTSFRAME_HEIGHT, APPLICATION_NAME));
+				resultsController = new ResultsController(
+						new ResultsFrame(RESULTSFRAME_WIDTH, RESULTSFRAME_HEIGHT, APPLICATION_NAME));
 			resultsController.showResult(mainPlayer);
 		}
 	}
 
 	private void showResults() {
 		mainPlayer = getMainPlayer();
-		
+
 		updateHtml();
 		updateResultsDialog();
 
@@ -121,16 +121,22 @@ public class BattlegroundsAnalyser implements LogFileObserver {
 		playersList.add(player);
 	}
 
-	private void updatePlayerPlace(Map<String, String> data) {
-		String heroId = data.get("playerHeroId");
-		Player player = getPlayerByHeroId(heroId);
-		if (player != null)
-			player.setPlace(Integer.parseInt(data.get("playerPlace")));
+	private void updatePlayerPlaceAndHero(Map<String, String> data) {
+		String playerId = data.get("playerId");
+		Player player = getPlayerById(playerId);
+
+		if (player == null)
+			return;
+
+		if (player.getHeroId().equals(data.get("playerHeroId")))
+			player.setHeroId(data.get("playerHeroId"));
+
+		player.setPlace(Integer.parseInt(data.get("playerPlace")));
 	}
 
-	private Player getPlayerByHeroId(String heroId) {
+	private Player getPlayerById(String playerId) {
 		for (Player player : playersList)
-			if (player.getHeroId().equals(heroId))
+			if (String.valueOf(player.getId()).equals(playerId))
 				return player;
 		return null;
 	}
@@ -140,14 +146,17 @@ public class BattlegroundsAnalyser implements LogFileObserver {
 //		if (data.get("infoType").equals("gameStarted"))
 //			setGameStartedTime(data);
 
+//		System.out.println(data);
+
 		if (data.get("infoType").equals("mainPlayer"))
 			setMainPlayer(data);
 
 		if (data.get("infoType").equals("playerHero"))
 			setPlayerIdsAndHeroes(data);
 
-		if (data.get("infoType").equals("playerPlace"))
-			updatePlayerPlace(data);
+		if (data.get("infoType").equals("playerPlace")) {
+			updatePlayerPlaceAndHero(data);
+		}
 
 		if (data.get("infoType").equals("gameFinished"))
 			finishGame(data);
@@ -168,7 +177,15 @@ public class BattlegroundsAnalyser implements LogFileObserver {
 	public void setStartMmr(int startMmr) {
 		this.startMmr = startMmr;
 		htmlUpdater.setStartMmr(startMmr);
-		htmlUpdater.setCurrentMmr(startMmr);
 	}
 
+	public int getCurrentMmr() {
+		return currentMmr;
+	}
+
+	public void setCurrentMmr(int currentMmr) {
+		this.currentMmr = currentMmr;
+		htmlUpdater.setCurrentMmr(currentMmr);
+	}
+	
 }

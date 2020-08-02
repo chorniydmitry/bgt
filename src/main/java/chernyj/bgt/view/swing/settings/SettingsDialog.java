@@ -16,7 +16,7 @@ import chernyj.bgt.utils.I18nUtils;
 public class SettingsDialog extends JDialog {
 	private static final long serialVersionUID = 6816002482388563385L;
 	
-	private I18nUtils localization = new I18nUtils(SettingsDialog.class.getCanonicalName());
+	private I18nUtils localization = new I18nUtils("i18n.SettingsDialog");
 	private JLabel lblPathToHearthstoneCaption = new JLabel(localization.getText("pathToHS"));
 	private JLabel lblPathToHearthstone = new JLabel();
 	

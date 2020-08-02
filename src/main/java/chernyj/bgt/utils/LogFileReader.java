@@ -80,12 +80,14 @@ public class LogFileReader implements Runnable, LogFileSubject {
 		String playerCardId = message.split("cardId=")[1].split(" ")[0];
 		String playerPlace = message.split("tag=PLAYER_LEADERBOARD_PLACE value=")[1].trim();
 		String playerZone = message.split("zone=")[1].split(" ")[0];
-
+		String playerId = message.split("player=")[1].split("]")[0];
+				
 		Map<String, String> resultSet = new HashMap<>();
 		resultSet.put("infoType", "playerPlace");
 		resultSet.put("playerHeroId", playerCardId);
 		resultSet.put("playerPlace", playerPlace);
 		resultSet.put("playerZone", playerZone);
+		resultSet.put("playerId", playerId);
 
 		return resultSet;
 	}
@@ -232,7 +234,6 @@ public class LogFileReader implements Runnable, LogFileSubject {
 
 		isGotMainPlayerInfo = true;
 		notifyObservers(resultSet);
-
 	}
 
 	public void run() {

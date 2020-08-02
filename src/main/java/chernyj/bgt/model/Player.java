@@ -57,4 +57,10 @@ public class Player {
 		this.heroId = heroId;
 	}
 
+	@Override
+	public String toString() {
+		return "Player [id=" + id + ", name=" + name + ", bTag=" + bTag + ", place=" + place + ", heroId=" + heroId
+				+ ", isMainPlayer=" + isMainPlayer + "]";
+	}
+	
 }

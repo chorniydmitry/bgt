@@ -1,5 +1,8 @@
 package chernyj.bgt.view.swing;
 
+import static chernyj.bgt.utils.ApplicationConstants.HERO_IMAGE_HEIGHT;
+import static chernyj.bgt.utils.ApplicationConstants.HERO_IMAGE_WIDTH;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -10,6 +13,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.util.ArrayList;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -78,9 +82,8 @@ public class ResultsFrame extends JFrame {
 	}
 	
 	public void update(String imageName, int score) {
-		ImageIcon icon = new ImageIcon(
-				new ImageIcon(ResultsFrame.class.getResource("/images/heroes/" + imageName + ".jpg")).getImage()
-						.getScaledInstance(ApplicationConstants.HERO_IMAGE_WIDTH, ApplicationConstants.HERO_IMAGE_HEIGHT, Image.SCALE_DEFAULT));
+		Icon icon = new ImageIcon(new ImageIcon("res/" + imageName + ".jpg").getImage()
+				.getScaledInstance(HERO_IMAGE_WIDTH, HERO_IMAGE_HEIGHT, Image.SCALE_DEFAULT));
 
 		JLabel imgLabel = new JLabel();
 		imgLabel.setIcon(icon);

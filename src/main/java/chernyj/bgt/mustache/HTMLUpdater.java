@@ -27,7 +27,7 @@ public class HTMLUpdater {
 	}
 
 	public void addResult(String hero, int place, int currentMmr) {
-		String image = HTMLUpdater.class.getResource("/images/heroes/" + hero + ".jpg").getPath();
+		String image = "res/" + hero + ".jpg";
 
 		if (currentMmr == 0)
 			currentMmr = startMmr;
@@ -56,9 +56,9 @@ public class HTMLUpdater {
 		int mmrRating = getMmrRating();
 		String returnValue = new String();
 		if (mmrRating > 0)
-			returnValue = "↑" + String.valueOf(Math.abs(mmrRating));
+			returnValue = "^" + String.valueOf(Math.abs(mmrRating));
 		if (mmrRating < 0)
-			returnValue = "↓" + String.valueOf(Math.abs(mmrRating));
+			returnValue = "v" + String.valueOf(Math.abs(mmrRating));
 		if (mmrRating == 0)
 			returnValue = "";
 

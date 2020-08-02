@@ -17,7 +17,7 @@ import chernyj.bgt.utils.I18nUtils;
  *
  */
 public class Tray {
-	private I18nUtils localization = new I18nUtils(Tray.class.getCanonicalName());
+	private I18nUtils localization = new I18nUtils("i18n.Tray");
 
 	private MenuItem miSettings = new MenuItem(localization.getText("settings"));
 	private MenuItem miEditValues = new MenuItem(localization.getText("editValues"));

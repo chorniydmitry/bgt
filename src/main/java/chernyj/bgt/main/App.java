@@ -26,24 +26,18 @@ public class App {
 		uiConfig();
 		
 		new TrayController(new Tray());
-
-		LogFileReader reader = new LogFileReader(ApplicationConfiguration.getItem("hearthsone.path"));
-
-		BattlegroundsAnalyser game = new BattlegroundsAnalyser();
-		
-		reader.register(new LogFileUtils());
-		reader.register(game);
-
-		reader.run();
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				appStart();
-				
-			}
-		});
+		appStart();
+		
+		
+//		SwingUtilities.invokeLater(new Runnable() {
+//			@Override
+//			public void run() {
+//				
+//				
+//			}
+//		});
 	}
 }

@@ -10,7 +10,7 @@ import chernyj.bgt.utils.I18nUtils;
 
 public class InputMmrDialog {
 	
-	private static I18nUtils localization = new I18nUtils(InputMmrDialog.class.getCanonicalName());
+	private static I18nUtils localization = new I18nUtils("i18n.InputMmrDialog");
 
 	public static int showInputDialog(Component parent, Icon icon, int place, int lastMmrValue, String message) {
 		
