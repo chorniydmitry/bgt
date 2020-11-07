@@ -2,6 +2,7 @@ package chernyj.bgt.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -235,11 +236,36 @@ public class LogFileReader implements Runnable, LogFileSubject {
 		isGotMainPlayerInfo = true;
 		notifyObservers(resultSet);
 	}
+	
+	private int getLogFileLines() {
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(logFile));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		int lines = 0;
+		try {
+			while (reader.readLine() != null) lines++;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			reader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lines;
+	}
 
 	public void run() {
+		int currentLine = 0;
+		int prevLine = -1;
 		try {
 			createLogFileIfNotExists();
-
+			
 			BufferedReader br = new BufferedReader(new FileReader(logFile));
 			String line = null;
 
@@ -248,7 +274,16 @@ public class LogFileReader implements Runnable, LogFileSubject {
 			}
 
 			while (isRunning) {
+				if(currentLine != 0 && currentLine == prevLine && currentLine > getLogFileLines()) {
+					br = new BufferedReader(new FileReader(logFile));
+					currentLine = 0;
+				}
+				
+				prevLine = currentLine;
+				
+				System.out.println(currentLine);
 				line = br.readLine();
+				
 
 				if (line == null) {
 					notifyObservers(getEndOfFileReachedInfo());
@@ -300,7 +335,7 @@ public class LogFileReader implements Runnable, LogFileSubject {
 				}
 
 				// Thread.sleep(UPDATE_TIME);
-
+				currentLine++;
 			}
 			br.close();
 		} catch (Exception e) {
@@ -310,6 +345,8 @@ public class LogFileReader implements Runnable, LogFileSubject {
 		}
 		if (debug)
 			this.printLine("Exit the program...");
+		
+		
 
 	}
 	
